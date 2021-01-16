@@ -93,6 +93,7 @@ class eventedLabel(QLabel):
         :return: True if image loaded correctly. False otherwise.
         """
         self.existing_rects = []
+        self.scale_factor = (1, 1)
         self.path = path
         self.pixmap = QPixmap(
             str(
@@ -153,7 +154,7 @@ class eventedLabel(QLabel):
         Parse annotations to the activating class.
         :return: Annotaions in image coordinates.
         """
-        return [self.labelToImageCoordinates(*coords) for coords in self.existing_rects]
+        return [list(map(round, self.labelToImageCoordinates(*coords))) for coords in self.existing_rects]
 
     def useAnnotations(self, annotations):
         """

@@ -49,7 +49,6 @@ class Window(QMainWindow):
     def nextImage(self, direction='next'):
         self.current_image = self.current_image + 1 if direction == 'next' else self.current_image - 1
 
-        print(self.current_image)
         if direction == 'next' and self.current_image >= len(self.img_list):
             print('Reached the last image.')
             self.current_image = len(self.img_list) - 1
