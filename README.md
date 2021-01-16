@@ -5,6 +5,7 @@ This repository contains code for GUI bounding box application.
 ## Installation 
 Code was developed on Linux Kubuntu 18.04, Python 3.7.1, PyQt5.
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
