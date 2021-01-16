@@ -48,7 +48,6 @@ class Window(QMainWindow):
 
     def nextImage(self, direction='next'):
         self.current_image = self.current_image + 1 if direction == 'next' else self.current_image - 1
-
         if direction == 'next' and self.current_image >= len(self.img_list):
             print('Reached the last image.')
             self.current_image = len(self.img_list) - 1
@@ -63,7 +62,6 @@ class Window(QMainWindow):
         annotations = self.annotations.get(next_img_path, [])
 
         if not self.image_label.setImage(self.img_list[self.current_image], annotations):
-            self.current_image = self.current_image + 1 if direction == 'next' else self.current_image - 1
             self.nextImage(direction)
 
     def getAnnotations(self):
