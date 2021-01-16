@@ -102,7 +102,7 @@ class eventedLabel(QLabel):
         )
 
         if self.pixmap.isNull():
-            print(f'Cannot load {str(path)}')
+            print(f'Cannot load image {str(path)}')
             return False
 
         self.setScaledPixmap()
