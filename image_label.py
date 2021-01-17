@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPainter, QPixmap, QPen
 class eventedLabel(QLabel):
     def __init__(self, parent_dim):
         """
-        This class inherits the QPixmap class and handles events internally. It handles all the intra-image events.
+        This class inherits the QLabel class and handles events internally. It handles all the intra-image events.
         I keep an unmodified version of the original image in the background.
         :param parent_dim: Tuple. The dimensions of the parent window
         """
@@ -38,6 +38,11 @@ class eventedLabel(QLabel):
         self.mouse_held = False
 
     def appendRect(self, x, y, w, h):
+        """
+        If the user drags upwards or leftwards, the w,h of the rectangle could be negaive.
+
+        :return: Tuple. (x, y, w, h) corrected so that x,y always describe the upper=left corner.
+        """
         if w < 0:
             x = x + w
             w = abs(w)
@@ -68,7 +73,7 @@ class eventedLabel(QLabel):
 
     def drawTempRect(self, x, y, w, h, c):
         """
-        This function draw a regtangle and clears it right up again. It is needed
+        This function draw a rectangle and clears it right up again. It is needed
         so that we dont start painting with rectangles on the image.
 
         :param c: QT constant. Color.
