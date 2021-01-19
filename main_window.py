@@ -2,6 +2,7 @@ from pathlib import Path
 import pickle
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+import numpy as np
 
 from image_label import eventedLabel
 
@@ -21,6 +22,15 @@ class Window(QMainWindow):
         if (Path(args.dir) / 'results.pkl').exists():
             with open(Path(args.dir) / 'results.pkl', 'rb') as f:
                 self.annotations = pickle.load(f)
+
+                # case where the user pressed left or right without annotatting
+                unannotated_images = [key for key, value in self.annotations.items() if len(value) == 0]
+                # case where the user stopped half-way and the image isnt in the annotations dict at all
+                unopened_image = [str(img) for img in self.img_list if str(img) not in self.annotations]
+
+                unannotated_names = unannotated_images + unopened_image
+                unannotated_index = np.where([str(img) in unannotated_names for img in self.img_list])[0][0]
+                self.current_image = unannotated_index - 1 # minus 1 because i add 1 at the begining of nextImage
 
         self.initLayout()
 

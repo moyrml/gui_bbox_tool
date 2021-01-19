@@ -79,6 +79,7 @@ class eventedLabel(QLabel):
         :param c: QT constant. Color.
         :return:
         """
+        self.drawExistingRects()
         self.drawRect(x, y, w, h, c)
         self.pixmap = self.static_pixmap.copy()
 
