@@ -4,6 +4,7 @@ from pathlib import Path
 import pickle
 import numpy as np
 
+
 def create_annotated_image(file_path, bboxes, output_folder):
     img = cv2.imread(file_path).astype(np.uint8)
 
@@ -19,9 +20,11 @@ def create_annotated_image(file_path, bboxes, output_folder):
 
     cv2.imwrite(str(output_folder / Path(file_path).name), img)
 
+
 def iterate_files(annotations, output_folder):
     for file_path, bboxes in annotations.items():
         create_annotated_image(file_path, bboxes, output_folder)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -46,3 +49,4 @@ if __name__ == '__main__':
         output_folder.mkdir(parents=True)
 
     iterate_files(annotations, output_folder)
+

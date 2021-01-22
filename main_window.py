@@ -1,6 +1,6 @@
 from pathlib import Path
 import pickle
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QMimeDatabase
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 import numpy as np
 
@@ -23,14 +23,17 @@ class Window(QMainWindow):
             with open(Path(args.dir) / 'results.pkl', 'rb') as f:
                 self.annotations = pickle.load(f)
 
-                # case where the user pressed left or right without annotatting
-                unannotated_images = [key for key, value in self.annotations.items() if len(value) == 0]
                 # case where the user stopped half-way and the image isnt in the annotations dict at all
-                unopened_image = [str(img) for img in self.img_list if str(img) not in self.annotations]
+                mime_db = QMimeDatabase()
+                unopened_image = [str(img) for img in self.img_list
+                                  if str(img) not in self.annotations
+                                  and 'image' in mime_db.mimeTypeForFile(str(img)).name()]
+                unannotated_index = np.where([str(img) in unopened_image for img in self.img_list])[0]
 
-                unannotated_names = unannotated_images + unopened_image
-                unannotated_index = np.where([str(img) in unannotated_names for img in self.img_list])[0][0]
-                self.current_image = unannotated_index - 1 # minus 1 because i add 1 at the begining of nextImage
+                if len(unannotated_index) == 0:
+                    self.current_image = len(self.img_list) - 1
+                else:
+                    self.current_image = unannotated_index - 1  # minus 1 because i add 1 at the beginning of nextImage
 
         self.initLayout()
 
@@ -93,6 +96,7 @@ class Window(QMainWindow):
             self.getAnnotations()
             self.nextImage()
         elif key == Qt.Key_Q:
+            self.getAnnotations()
             self.saveCurrentData()
             self.close()
         elif key == Qt.Key_S:
